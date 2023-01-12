@@ -49,7 +49,7 @@ class RegisterSecondStepPage extends GetView<RegisterSecondStepController> {
             child: SizedBox(
               width: width * 0.3,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => Get.offAllNamed('/register-third-step'),
                 child: const Text('Confirm'),
               ),
             ),

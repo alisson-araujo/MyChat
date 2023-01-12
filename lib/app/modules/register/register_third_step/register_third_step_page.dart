@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class RegisterFirstStepPage extends StatelessWidget {
-  const RegisterFirstStepPage({super.key});
+class RegisterThirdStepPage extends StatelessWidget {
+  const RegisterThirdStepPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +29,10 @@ class RegisterFirstStepPage extends StatelessWidget {
               SizedBox(
                 width: width * 0.9,
                 child: TextFormField(
-                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    label: Text('phone number'),
+                    label: Text('username'),
                   ),
+                  maxLength: 25,
                 ),
               ),
             ],
@@ -42,7 +42,7 @@ class RegisterFirstStepPage extends StatelessWidget {
             child: SizedBox(
               width: width * 0.3,
               child: ElevatedButton(
-                onPressed: () => Get.toNamed('/register-second-step'),
+                onPressed: () => Get.offAllNamed('/home'),
                 child: const Text('Continue'),
               ),
             ),
