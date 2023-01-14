@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mychat/app/modules/home/widgets/chat_widget.dart';
+import 'package:mychat/app/modules/home/widgets/conversation_widget.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class ConversationsPage extends StatelessWidget {
+  const ConversationsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +23,19 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: const [
-            ChatWidget(
+            ConversationWidget(
               userName: 'Carla Araujo',
               lastMsg: 'hello, how are you?',
               lastMsgTime: '14:20',
               numberMsgNotRead: '1',
+              arguments: ['Carla Araujo'],
             ),
-            ChatWidget(
+            ConversationWidget(
               userName: 'Mother',
               lastMsg: 'go to supermarket for me',
               lastMsgTime: '13:01',
               numberMsgNotRead: '3',
+              arguments: ['Mother'],
             ),
           ],
         ),

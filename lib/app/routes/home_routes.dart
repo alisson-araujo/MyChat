@@ -1,15 +1,23 @@
 import 'package:get/get.dart';
-import 'package:mychat/app/modules/home/home_bindings.dart';
-import 'package:mychat/app/modules/home/home_page.dart';
+import 'package:mychat/app/modules/home/chat/chat_page.dart';
+import 'package:mychat/app/modules/home/conversations/conversations_bindings.dart';
+import 'package:mychat/app/modules/home/conversations/conversations_page.dart';
+
+import '../modules/home/chat/chat_bindings.dart';
 
 class HomeRouters {
   HomeRouters._();
 
   static final routes = <GetPage>[
     GetPage(
-      name: '/home',
-      binding: HomeBindings(),
-      page: () => const HomePage(),
+      name: '/conversations',
+      binding: ConversationsBindings(),
+      page: () => const ConversationsPage(),
+    ),
+    GetPage(
+      name: '/chat',
+      binding: ChatBindings(),
+      page: () => const ChatPage(),
     ),
   ];
 }

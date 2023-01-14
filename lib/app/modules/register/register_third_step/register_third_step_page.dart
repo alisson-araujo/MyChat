@@ -42,7 +42,7 @@ class RegisterThirdStepPage extends StatelessWidget {
             child: SizedBox(
               width: width * 0.3,
               child: ElevatedButton(
-                onPressed: () => Get.offAllNamed('/home'),
+                onPressed: () => Get.offAllNamed('/conversations'),
                 child: const Text('Continue'),
               ),
             ),
