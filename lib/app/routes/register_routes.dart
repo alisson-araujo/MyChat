@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:mychat/app/modules/register/register_first_step/register_first_step_bindings.dart';
-import 'package:mychat/app/modules/register/register_first_step/register_first_step_page.dart';
-import 'package:mychat/app/modules/register/register_second_step/register_second_step_bindings.dart';
-import 'package:mychat/app/modules/register/register_second_step/register_second_step_page.dart';
-import 'package:mychat/app/modules/register/register_third_step/register_third_step_bindings.dart';
-import 'package:mychat/app/modules/register/register_third_step/register_third_step_page.dart';
+import 'package:mychat/app/modules/auth/register/register_first_step/register_first_step_bindings.dart';
+import 'package:mychat/app/modules/auth/register/register_first_step/register_first_step_page.dart';
+import 'package:mychat/app/modules/auth/register/register_second_step/register_second_step_bindings.dart';
+import 'package:mychat/app/modules/auth/register/register_second_step/register_second_step_page.dart';
+import 'package:mychat/app/modules/auth/register/register_third_step/register_third_step_bindings.dart';
+import 'package:mychat/app/modules/auth/register/register_third_step/register_third_step_page.dart';
 
 class RegisterRouters {
   RegisterRouters._();

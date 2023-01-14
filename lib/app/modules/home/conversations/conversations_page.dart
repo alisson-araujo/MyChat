@@ -13,7 +13,7 @@ class ConversationsPage extends StatelessWidget {
       backgroundColor: grey,
       appBar: AppBar(
         title: Text(
-          'Home Page',
+          'Chats',
           style: TextStyle(color: Colors.grey[800]),
         ),
         backgroundColor: grey,

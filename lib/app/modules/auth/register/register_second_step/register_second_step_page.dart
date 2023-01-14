@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mychat/app/modules/register/register_second_step/register_second_step_controller.dart';
+import 'package:mychat/app/modules/auth/register/register_second_step/register_second_step_controller.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 class RegisterSecondStepPage extends GetView<RegisterSecondStepController> {
