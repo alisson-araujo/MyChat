@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mychat/app/modules/home/widgets/conversation_widget.dart';
 
 class ConversationsPage extends StatelessWidget {
@@ -41,7 +42,7 @@ class ConversationsPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => Get.toNamed('/contacts'),
         child: const Icon(Icons.message),
       ),
     );

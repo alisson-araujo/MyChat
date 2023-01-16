@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:mychat/app/modules/home/chat/chat_page.dart';
+import 'package:mychat/app/modules/home/contacts/contacts_bindings.dart';
+import 'package:mychat/app/modules/home/contacts/contacts_page.dart';
 import 'package:mychat/app/modules/home/conversations/conversations_bindings.dart';
 import 'package:mychat/app/modules/home/conversations/conversations_page.dart';
 
@@ -18,6 +20,11 @@ class HomeRouters {
       name: '/chat',
       binding: ChatBindings(),
       page: () => const ChatPage(),
+    ),
+    GetPage(
+      name: '/contacts',
+      binding: ContactsBidings(),
+      page: () => const ContactsPage(),
     ),
   ];
 }
