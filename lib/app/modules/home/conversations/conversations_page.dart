@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mychat/app/modules/home/conversations/conversations_controller.dart';
 import 'package:mychat/app/modules/home/widgets/conversation_widget.dart';
 
-class ConversationsPage extends StatelessWidget {
+class ConversationsPage extends GetView<ConversationsController> {
   const ConversationsPage({super.key});
 
   @override
@@ -23,21 +24,25 @@ class ConversationsPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Column(
-          children: const [
-            ConversationWidget(
-              userName: 'Carla Araujo',
-              lastMsg: 'hello, how are you?',
-              lastMsgTime: '14:20',
-              numberMsgNotRead: '1',
-              arguments: ['Carla Araujo'],
-            ),
-            ConversationWidget(
-              userName: 'Mother',
-              lastMsg: 'go to supermarket for me',
-              lastMsgTime: '13:01',
-              numberMsgNotRead: '3',
-              arguments: ['Mother'],
-            ),
+          children: [
+            Expanded(
+              child: Obx(
+                () => ListView.builder(
+                  itemCount: controller.chats.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () => controller.getChat(
+                        controller.chats[index]['numberContact'],
+                        controller.chats[index]['nameContact'],
+                      ),
+                      child: ConversationWidget(
+                        userName: controller.chats[index]['nameContact'],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            )
           ],
         ),
       ),

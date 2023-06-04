@@ -27,7 +27,7 @@ class _ChatPageState extends State<ChatPage> {
             const CircleAvatar(child: Icon(Icons.person)),
             const SizedBox(width: 10),
             Text(
-              Get.arguments[0] ?? 'Nome',
+              controller.contact['nameContact'],
               style: TextStyle(color: Colors.grey[800]),
             ),
           ],
@@ -71,6 +71,7 @@ class _ChatPageState extends State<ChatPage> {
               IconButton(
                 onPressed: () {
                   controller.lista.add(MessageWidget(text: mensageEd.text));
+                  controller.sendMessage(mensageEd.text);
                   mensageEd.clear();
                 },
                 icon: const Icon(Icons.send),

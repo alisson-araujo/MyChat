@@ -39,6 +39,12 @@ class ContactsPage extends GetView<ContactsController> {
                       itemCount: controller.contatos?.length,
                       itemBuilder: (context, index) {
                         return ListTile(
+                          onTap: () => {
+                            controller.getChat(
+                                controller.contatos?[index + 1].phones?[0].value
+                                    ?.replaceAll(RegExp(r'[^\d]+'), ''),
+                                controller.contatos?[index + 1].givenName),
+                          },
                           title: Text(
                               controller.contatos?[index + 1].givenName ?? ''),
                           trailing: TextButton(
