@@ -37,6 +37,7 @@ class ConversationsPage extends GetView<ConversationsController> {
                       ),
                       child: ConversationWidget(
                         userName: controller.chats[index]['nameContact'],
+                        lastMsg: controller.chats[index]['lastMsg'],
                       ),
                     );
                   },

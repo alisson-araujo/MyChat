@@ -35,6 +35,12 @@ class ChatSqlite {
 
   setMessage(Message message) async {
     db = await SqliteDb.instance.database;
+    await db.update(
+      'chat',
+      {'lastMsg': message.content, 'lastMsgTime': message.sendDate.toString()},
+      where: 'id = ?',
+      whereArgs: [message.idChat],
+    );
     int id = await db.insert('message', message.toMap());
     debugPrint('registered message, id: $id');
   }
