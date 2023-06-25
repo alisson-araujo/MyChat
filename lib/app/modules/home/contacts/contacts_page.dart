@@ -41,12 +41,12 @@ class ContactsPage extends GetView<ContactsController> {
                         return ListTile(
                           onTap: () => {
                             controller.getChat(
-                                controller.contatos?[index + 1].phones?[0].value
+                                controller.contatos?[index].phones?[0].value
                                     ?.replaceAll(RegExp(r'[^\d]+'), ''),
-                                controller.contatos?[index + 1].givenName),
+                                controller.contatos?[index].givenName),
                           },
                           title: Text(
-                              controller.contatos?[index + 1].givenName ?? ''),
+                              controller.contatos?[index].givenName ?? ''),
                           trailing: TextButton(
                             onPressed: () {},
                             child: const Text('Invite'),

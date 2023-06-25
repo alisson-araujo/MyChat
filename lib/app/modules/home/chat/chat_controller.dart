@@ -17,29 +17,23 @@ class ChatController extends GetxController {
   List<Widget> mensagens = [];
   RxList lista = [].obs;
   Map contact = Get.arguments[0];
+  int? id = Get.arguments[0]['id'];
 
   Future<int> _setChat() async {
-    for (var chat in sqliteRepository.chats) {
-      if (chat['numberContact'] == Get.arguments[0]['numberContact']) {
-        debugPrint('chaaaaaaaaaaaaaat: $chat');
-        return chat['id'];
-      }
-    }
-
     int id = await sqliteRepository.setChat(
       Chat(
-        numberContact: Get.arguments[0]['numberContact'],
-        nameContact: Get.arguments[0]['nameContact'],
+        numberContact: contact['numberContact'],
+        nameContact: contact['nameContact'],
       ),
     );
     return id;
   }
 
   void sendMessage(String message) async {
-    int id = await _setChat();
+    id ??= await _setChat();
     await sqliteRepository.setMessage(
       Message(
-        idChat: id,
+        idChat: id!,
         content: message,
         sendDate: DateTime.now(),
       ),

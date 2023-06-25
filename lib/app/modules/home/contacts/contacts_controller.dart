@@ -18,9 +18,10 @@ class ContactsController extends GetxController {
   Future<void> _askPermission() async {
     PermissionStatus permissionStatus = await _getContactPermission();
     if (permissionStatus == PermissionStatus.granted) {
-      contatos = await ContactsService.getContacts();
+      contatos = await ContactsService.getContacts(withThumbnails: false);
+      contatos?.removeWhere((element) => element.phones == null);
+      contatos?.removeWhere((element) => element.givenName == null);
       isComplete.toggle();
-      debugPrint('is ready!!!!');
     } else {
       _handleInvalidPermissions(permissionStatus);
     }
