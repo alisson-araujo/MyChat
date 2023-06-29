@@ -19,66 +19,72 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: grey,
-      appBar: AppBar(
-        title: Row(
-          children: [
-            const CircleAvatar(child: Icon(Icons.person)),
-            const SizedBox(width: 10),
-            Text(
-              controller.contact['nameContact'],
-              style: TextStyle(color: Colors.grey[800]),
-            ),
-          ],
-        ),
-        leadingWidth: width * 0.08,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert),
-          ),
-        ],
-        toolbarHeight: height * 0.07,
+    return WillPopScope(
+      onWillPop: () {
+        Get.offAllNamed('/conversations');
+        return Future.value(false);
+      },
+      child: Scaffold(
         backgroundColor: grey,
-        elevation: 0,
-        foregroundColor: Colors.grey[800],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Obx(
-              () => Container(
-                child: controller.lista.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: controller.lista.length,
-                        itemBuilder: (context, index) {
-                          return controller.lista[index];
-                        },
-                      )
-                    : const SizedBox(),
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        appBar: AppBar(
+          title: Row(
             children: [
-              Expanded(
-                child: TextFormField(
-                  controller: mensageEd,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  controller.lista.add(MessageWidget(text: mensageEd.text));
-                  controller.sendMessage(mensageEd.text);
-                  mensageEd.clear();
-                },
-                icon: const Icon(Icons.send),
+              const CircleAvatar(child: Icon(Icons.person)),
+              const SizedBox(width: 10),
+              Text(
+                controller.contact['nameContact'],
+                style: TextStyle(color: Colors.grey[800]),
               ),
             ],
-          )
-        ],
+          ),
+          leadingWidth: width * 0.08,
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.more_vert),
+            ),
+          ],
+          toolbarHeight: height * 0.07,
+          backgroundColor: grey,
+          elevation: 0,
+          foregroundColor: Colors.grey[800],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: Obx(
+                () => Container(
+                  child: controller.lista.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: controller.lista.length,
+                          itemBuilder: (context, index) {
+                            return controller.lista[index];
+                          },
+                        )
+                      : const SizedBox(),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: mensageEd,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    controller.lista.add(MessageWidget(text: mensageEd.text));
+                    controller.sendMessage(mensageEd.text);
+                    mensageEd.clear();
+                  },
+                  icon: const Icon(Icons.send),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
