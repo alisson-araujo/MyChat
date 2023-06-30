@@ -32,7 +32,7 @@ class _ChatPageState extends State<ChatPage> {
               const CircleAvatar(child: Icon(Icons.person)),
               const SizedBox(width: 10),
               Text(
-                controller.contact['nameContact'],
+                controller.contact.nameContact ?? '',
                 style: TextStyle(color: Colors.grey[800]),
               ),
             ],
@@ -53,16 +53,14 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             Expanded(
               child: Obx(
-                () => Container(
-                  child: controller.lista.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: controller.lista.length,
-                          itemBuilder: (context, index) {
-                            return controller.lista[index];
-                          },
-                        )
-                      : const SizedBox(),
-                ),
+                () => controller.listMsg.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: controller.listMsg.length,
+                        itemBuilder: (context, index) {
+                          return controller.listMsg[index];
+                        },
+                      )
+                    : const SizedBox(),
               ),
             ),
             Row(
@@ -75,7 +73,8 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    controller.lista.add(MessageWidget(text: mensageEd.text));
+                    if (mensageEd.text.isEmpty) return;
+                    controller.listMsg.add(MessageWidget(text: mensageEd.text));
                     controller.sendMessage(mensageEd.text);
                     mensageEd.clear();
                   },

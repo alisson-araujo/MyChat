@@ -12,32 +12,27 @@ class ConversationsController extends GetxController {
   }
 
   final chatsql = ChatSqlite();
-  RxList<Chat> chats = [Chat(numberContact: '')].obs;
+  RxList<Chat> chats = [Chat()].obs;
 
   Future<void> loadChats() async {
     final List resp = await chatsql.getChats();
     debugPrint('resp: $resp');
-    chats.removeAt(0);
+    chats.clear();
     for (int i = 0; i < resp.length; i++) {
       chats.add(Chat.fromMap(resp[i]));
     }
-    if (chats.length > 1) {
+    if (chats.length > 1 && chats[0].lastMsgTime != null) {
       chats.sort((a, b) => b.lastMsgTime!.compareTo(a.lastMsgTime!));
     }
   }
 
-  Future<void> getChat(numberContact, nameContact) async {
-    final chats = chatsql.chats;
-    for (var chat in chats) {
-      if (chat['numberContact'] == numberContact) {
-        final messages = await chatsql.getMessages(chat['id']);
-        Get.toNamed('/chat', arguments: [chat, messages]);
-      }
+  Future<void> getChat(Chat chat) async {
+    final talk = await chatsql.getChat(chat.id!);
+    if (talk.isNotEmpty) {
+      final messages = await chatsql.getMessages(chat.id!);
+      Get.toNamed('/chat', arguments: [chat, messages]);
     }
-    final param = {
-      'numberContact': numberContact,
-      'nameContact': nameContact,
-    };
-    Get.toNamed('/chat', arguments: [param]);
+
+    Get.toNamed('/chat', arguments: [chat]);
   }
 }

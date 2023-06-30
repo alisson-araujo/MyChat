@@ -56,6 +56,12 @@ class ChatSqlite {
     return resp;
   }
 
+  Future<List> getChat(int id) async {
+    db = await SqliteDb.instance.database;
+    final resp = await db.query('chat', where: 'id = ?', whereArgs: [id]);
+    return resp;
+  }
+
   Future<List> getChats() async {
     db = await SqliteDb.instance.database;
     final resp = await db.query('chat');

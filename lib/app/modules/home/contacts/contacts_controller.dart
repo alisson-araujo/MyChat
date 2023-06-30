@@ -1,6 +1,6 @@
 import 'package:contacts_service/contacts_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:mychat/app/models/chat.dart';
 import 'package:mychat/app/repositories/sqlite/chat_sqlite.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -58,16 +58,23 @@ class ContactsController extends GetxController {
     final chats = chatSqlite.chats;
     for (var chat in chats) {
       if (chat['numberContact'] == numberContact) {
-        debugPrint('chat: $chat');
         final messages = await chatSqlite.getMessages(chat['id']);
-        debugPrint('messages: $messages');
-        Get.toNamed('/chat', arguments: [chat, messages]);
+        final chatObj = Chat(
+          id: chat['id'],
+          numberContact: chat['numberContact'],
+          nameContact: chat['nameContact'],
+          lastMsgTime: chat['lastMsgTime'],
+          lastMsg: chat['lastMsg'],
+        );
+        Get.toNamed('/chat', arguments: [chatObj, messages]);
       }
     }
-    final param = {
-      'numberContact': numberContact,
-      'nameContact': nameContact,
-    };
-    Get.toNamed('/chat', arguments: [param]);
+
+    Get.toNamed('/chat', arguments: [
+      Chat(
+        numberContact: numberContact,
+        nameContact: nameContact,
+      )
+    ]);
   }
 }

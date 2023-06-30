@@ -9,23 +9,19 @@ import '../widgets/message_widget.dart';
 class ChatController extends GetxController {
   @override
   void onInit() {
+    contact = Get.arguments[0];
     loadMessages();
     super.onInit();
   }
 
   final sqliteRepository = ChatSqlite();
   List<Widget> mensagens = [];
-  RxList lista = [].obs;
-  Map contact = Get.arguments[0];
-  int? id = Get.arguments[0]['id'];
+  RxList listMsg = [].obs;
+  late Chat contact;
+  late int? id = contact.id;
 
-  Future<int> _setChat() async {
-    int id = await sqliteRepository.setChat(
-      Chat(
-        numberContact: contact['numberContact'],
-        nameContact: contact['nameContact'],
-      ),
-    );
+  Future<int?> _setChat() async {
+    id = await sqliteRepository.setChat(contact);
     return id;
   }
 
@@ -33,7 +29,7 @@ class ChatController extends GetxController {
     id ??= await _setChat();
     await sqliteRepository.setMessage(
       Message(
-        idChat: id!,
+        idChat: contact.id ?? id ?? 1,
         content: message,
         sendDate: DateTime.now(),
       ),
@@ -46,7 +42,7 @@ class ChatController extends GetxController {
       List messagesSorted = List.from(messages);
       messagesSorted.sort((a, b) => a['send_date'].compareTo(b['send_date']));
       for (var message in messagesSorted) {
-        lista.add((MessageWidget(text: message['content'])));
+        listMsg.add((MessageWidget(text: message['content'])));
       }
     }
   }
