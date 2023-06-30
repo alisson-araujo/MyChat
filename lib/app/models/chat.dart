@@ -3,7 +3,7 @@ class Chat {
   final String numberContact;
   final String? nameContact;
   final String? lastMsg;
-  // final String? lastMsgTime;
+  final String? lastMsgTime;
   final String? numberMsgNotRead;
 
   Chat({
@@ -11,7 +11,7 @@ class Chat {
     required this.numberContact,
     this.nameContact,
     this.lastMsg,
-    // this.lastMsgTime,
+    this.lastMsgTime,
     this.numberMsgNotRead,
   });
 
@@ -21,8 +21,19 @@ class Chat {
     map['numberContact'] = numberContact;
     map['nameContact'] = nameContact;
     map['lastMsg'] = lastMsg;
-    // map['lastMsgTime'] = lastMsgTime;
+    map['lastMsgTime'] = lastMsgTime;
     map['numberMsgNotRead'] = numberMsgNotRead;
     return map;
+  }
+
+  factory Chat.fromMap(Map<String, dynamic> map) {
+    return Chat(
+      // id: map['id'],
+      numberContact: map['numberContact'],
+      nameContact: map['nameContact'],
+      lastMsg: map['lastMsg'],
+      lastMsgTime: map['lastMsgTime'],
+      numberMsgNotRead: map['numberMsgNotRead'],
+    );
   }
 }

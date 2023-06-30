@@ -58,12 +58,12 @@ class _ConversationsPageState extends State<ConversationsPage>
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () => controller.getChat(
-                        controller.chats[index]['numberContact'],
-                        controller.chats[index]['nameContact'],
+                        controller.chats[index].numberContact,
+                        controller.chats[index].nameContact,
                       ),
                       child: ConversationWidget(
-                        userName: controller.chats[index]['nameContact'],
-                        lastMsg: controller.chats[index]['lastMsg'],
+                        userName: controller.chats[index].nameContact,
+                        lastMsg: controller.chats[index].lastMsg,
                       ),
                     );
                   },
