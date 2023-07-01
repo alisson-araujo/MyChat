@@ -20,44 +20,43 @@ class ConversationWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  radius: 30,
-                  child: urlImage != null
-                      ? Image.network(urlImage!)
-                      : const Icon(
-                          Icons.person,
-                          color: Colors.black,
-                        ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      userName ?? '',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: CircleAvatar(
+              backgroundColor: Colors.grey,
+              radius: 30,
+              child: urlImage != null
+                  ? Image.network(urlImage!)
+                  : const Icon(
+                      Icons.person,
+                      color: Colors.black,
                     ),
-                    Text(
-                      lastMsg ?? 'msgs not found',
-                      style: const TextStyle(fontSize: 17),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userName ?? '',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
-                  ],
-                ),
+                  ),
+                  Text(
+                    lastMsg ?? 'msgs not found',
+                    style: const TextStyle(fontSize: 17),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 10),
@@ -65,15 +64,20 @@ class ConversationWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(lastMsgTime ?? ''),
+                Text(
+                  lastMsgTime ?? '',
+                  style: TextStyle(color: Colors.grey[700]),
+                ),
                 const SizedBox(height: 5),
-                CircleAvatar(
-                  radius: 12,
-                  child: Text(
-                    numberMsgNotRead ?? '',
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                )
+                numberMsgNotRead == null
+                    ? const SizedBox(height: 21)
+                    : CircleAvatar(
+                        radius: 12,
+                        child: Text(
+                          numberMsgNotRead ?? '',
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
               ],
             ),
           ),

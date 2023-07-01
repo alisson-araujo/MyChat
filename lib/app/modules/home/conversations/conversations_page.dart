@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:mychat/app/modules/home/conversations/conversations_controller.dart';
 import 'package:mychat/app/modules/home/widgets/conversation_widget.dart';
 
@@ -56,11 +57,15 @@ class _ConversationsPageState extends State<ConversationsPage>
                 () => ListView.builder(
                   itemCount: controller.chats.length,
                   itemBuilder: (context, index) {
+                    final dateParse = DateTime.tryParse(
+                        controller.chats[index].lastMsgTime ?? '');
                     return GestureDetector(
                       onTap: () => controller.getChat(controller.chats[index]),
                       child: ConversationWidget(
                         userName: controller.chats[index].nameContact,
                         lastMsg: controller.chats[index].lastMsg,
+                        lastMsgTime: DateFormat('HH:mm')
+                            .format(dateParse ?? DateTime.now()),
                       ),
                     );
                   },

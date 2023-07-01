@@ -23,6 +23,7 @@ dependencies:
   url_launcher: ^6.1.7
   sqflite: ^2.2.6
   path: ^1.8.2
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -36,5 +37,4 @@ flutter:
 
   assets:
     - assets/images/MyCHAT.png
-  #   - images/a_dot_ham.jpeg
 
