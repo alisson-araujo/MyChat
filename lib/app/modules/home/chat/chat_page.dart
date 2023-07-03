@@ -23,8 +23,12 @@ class _ChatPageState extends State<ChatPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToBottom();
     });
-    KeyboardVisibilityController().onChange.listen((bool visible) {
+    KeyboardVisibilityController().onChange.listen((bool visible) async {
       controller.keyboardOpen.value = visible;
+      if (visible) {
+        await Future.delayed(const Duration(milliseconds: 300));
+        _scrollToBottom();
+      }
     });
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
@@ -46,12 +50,9 @@ class _ChatPageState extends State<ChatPage> {
 
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
-      if (controller.isScrollAtBottom.value == false) {
-        debugPrint("ativou o scroll");
-        _scrollController.jumpTo(
-          _scrollController.position.maxScrollExtent,
-        );
-      }
+      _scrollController.jumpTo(
+        _scrollController.position.maxScrollExtent,
+      );
     }
   }
 
@@ -89,99 +90,92 @@ class _ChatPageState extends State<ChatPage> {
           elevation: 0,
           foregroundColor: Colors.grey[800],
         ),
-        bottomNavigationBar: Obx(
-          () => Padding(
-            padding: controller.keyboardOpen.value
-                ? EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom)
-                : EdgeInsets.zero,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: width * 0.05,
-                      right: width * 0.03,
-                      top: height * 0.01,
-                    ),
-                    child: TextFormField(
-                      minLines: 1,
-                      maxLines: 3,
-                      decoration: InputDecoration(
-                        hintText: 'Message',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: EdgeInsets.only(
-                          left: width * 0.05,
-                          top: height * 0.01,
-                          bottom: height * 0.01,
-                        ),
+        bottomNavigationBar: SafeArea(
+          child: Obx(
+            () => Padding(
+              padding: controller.keyboardOpen.value
+                  ? EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom)
+                  : EdgeInsets.zero,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: width * 0.05,
+                        right: width * 0.03,
+                        top: height * 0.01,
                       ),
-                      onTap: () {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          _scrollToBottom();
-                        });
-                      },
-                      onChanged: (_) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          _scrollToBottom();
-                        });
-                      },
-                      controller: mensageEd,
+                      child: TextFormField(
+                        minLines: 1,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          hintText: 'Message',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: EdgeInsets.only(
+                            left: width * 0.05,
+                            top: height * 0.01,
+                            bottom: height * 0.01,
+                          ),
+                        ),
+                        controller: mensageEd,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: width * 0.05),
-                  child: IconButton(
-                    hoverColor: Colors.amber,
-                    onPressed: () {
-                      if (mensageEd.text.isEmpty) return;
-                      controller.listMsg.add(MessageWidget(
+                  Padding(
+                    padding: EdgeInsets.only(right: width * 0.05),
+                    child: IconButton(
+                      hoverColor: Colors.amber,
+                      onPressed: () {
+                        if (mensageEd.text.isEmpty) return;
+                        controller.listMsg.add(MessageWidget(
                           text: mensageEd.text,
-                          time: DateFormat('HH:mm').format(DateTime.now())));
-                      controller.sendMessage(mensageEd.text);
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        _scrollToBottom();
-                      });
-                      debugPrint(
-                          "ativou == == == =${controller.isScrollAtBottom.toString()}");
-                      mensageEd.clear();
-                    },
-                    icon: const Icon(Icons.send),
+                          time: DateFormat('HH:mm').format(DateTime.now()),
+                        ));
+                        controller.sendMessage(mensageEd.text);
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          _scrollToBottom();
+                        });
+                        mensageEd.clear();
+                      },
+                      icon: const Icon(Icons.send),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: controller.keyboardOpen.value
-                    ? height -
-                        kToolbarHeight -
-                        (MediaQuery.of(context).viewInsets.bottom * 1.3)
-                    : height -
-                        kToolbarHeight -
-                        (kBottomNavigationBarHeight * 2),
-                child: Obx(
-                  () => controller.listMsg.isNotEmpty
-                      ? ListView.builder(
-                          // key: UniqueKey(),
-                          controller: _scrollController,
-                          itemCount: controller.listMsg.length,
-                          itemBuilder: (context, index) {
-                            return controller.listMsg[index];
-                          },
-                        )
-                      : const SizedBox(),
+              Obx(
+                () => SizedBox(
+                  height: controller.keyboardOpen.value
+                      ? height -
+                          kToolbarHeight -
+                          (MediaQuery.of(context).viewInsets.bottom * 1.3)
+                      : height -
+                          kToolbarHeight -
+                          (kBottomNavigationBarHeight * 2),
+                  child: Obx(
+                    () => controller.listMsg.isNotEmpty
+                        ? ListView.builder(
+                            // key: UniqueKey(),
+                            controller: _scrollController,
+                            itemCount: controller.listMsg.length,
+                            itemBuilder: (context, index) {
+                              return controller.listMsg[index];
+                            },
+                          )
+                        : const SizedBox(),
+                  ),
                 ),
               ),
             ],
