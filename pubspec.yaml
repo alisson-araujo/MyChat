@@ -24,6 +24,7 @@ dependencies:
   sqflite: ^2.2.6
   path: ^1.8.2
   intl: ^0.18.1
+  flutter_keyboard_visibility: ^5.4.1
 
 dev_dependencies:
   flutter_test:

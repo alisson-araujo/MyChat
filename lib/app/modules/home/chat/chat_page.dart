@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:mychat/app/modules/home/chat/chat_controller.dart';
 import 'package:mychat/app/modules/home/widgets/message_widget.dart';
 
@@ -14,6 +16,44 @@ class _ChatPageState extends State<ChatPage> {
   final controller = Get.put(ChatController());
   final mensageEd = TextEditingController();
   final grey = Colors.grey[300];
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToBottom();
+    });
+    KeyboardVisibilityController().onChange.listen((bool visible) {
+      controller.keyboardOpen.value = visible;
+    });
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 50) {
+        controller.isScrollAtBottom.value = true;
+      } else {
+        controller.isScrollAtBottom.value = false;
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    mensageEd.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      if (controller.isScrollAtBottom.value == false) {
+        debugPrint("ativou o scroll");
+        _scrollController.jumpTo(
+          _scrollController.position.maxScrollExtent,
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,40 +89,103 @@ class _ChatPageState extends State<ChatPage> {
           elevation: 0,
           foregroundColor: Colors.grey[800],
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Obx(
-                () => controller.listMsg.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: controller.listMsg.length,
-                        itemBuilder: (context, index) {
-                          return controller.listMsg[index];
-                        },
-                      )
-                    : const SizedBox(),
-              ),
-            ),
-            Row(
+        bottomNavigationBar: Obx(
+          () => Padding(
+            padding: controller.keyboardOpen.value
+                ? EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom)
+                : EdgeInsets.zero,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: TextFormField(
-                    controller: mensageEd,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: width * 0.05,
+                      right: width * 0.03,
+                      top: height * 0.01,
+                    ),
+                    child: TextFormField(
+                      minLines: 1,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: 'Message',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.only(
+                          left: width * 0.05,
+                          top: height * 0.01,
+                          bottom: height * 0.01,
+                        ),
+                      ),
+                      onTap: () {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          _scrollToBottom();
+                        });
+                      },
+                      onChanged: (_) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          _scrollToBottom();
+                        });
+                      },
+                      controller: mensageEd,
+                    ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    if (mensageEd.text.isEmpty) return;
-                    controller.listMsg.add(MessageWidget(text: mensageEd.text));
-                    controller.sendMessage(mensageEd.text);
-                    mensageEd.clear();
-                  },
-                  icon: const Icon(Icons.send),
+                Padding(
+                  padding: EdgeInsets.only(right: width * 0.05),
+                  child: IconButton(
+                    hoverColor: Colors.amber,
+                    onPressed: () {
+                      if (mensageEd.text.isEmpty) return;
+                      controller.listMsg.add(MessageWidget(
+                          text: mensageEd.text,
+                          time: DateFormat('HH:mm').format(DateTime.now())));
+                      controller.sendMessage(mensageEd.text);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _scrollToBottom();
+                      });
+                      debugPrint(
+                          "ativou == == == =${controller.isScrollAtBottom.toString()}");
+                      mensageEd.clear();
+                    },
+                    icon: const Icon(Icons.send),
+                  ),
                 ),
               ],
-            )
-          ],
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: controller.keyboardOpen.value
+                    ? height -
+                        kToolbarHeight -
+                        (MediaQuery.of(context).viewInsets.bottom * 1.3)
+                    : height -
+                        kToolbarHeight -
+                        (kBottomNavigationBarHeight * 2),
+                child: Obx(
+                  () => controller.listMsg.isNotEmpty
+                      ? ListView.builder(
+                          // key: UniqueKey(),
+                          controller: _scrollController,
+                          itemCount: controller.listMsg.length,
+                          itemBuilder: (context, index) {
+                            return controller.listMsg[index];
+                          },
+                        )
+                      : const SizedBox(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

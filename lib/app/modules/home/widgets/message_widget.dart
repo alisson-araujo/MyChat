@@ -4,16 +4,18 @@ import 'package:mychat/app/utils/ui/triangle_message.dart';
 class MessageWidget extends StatelessWidget {
   final String? text;
   final bool isReceived;
+  final String? time;
   const MessageWidget({
     super.key,
     this.text,
     this.isReceived = false,
+    this.time,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+      padding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
       child: Row(
         mainAxisAlignment:
             isReceived ? MainAxisAlignment.start : MainAxisAlignment.end,
@@ -41,13 +43,27 @@ class MessageWidget extends StatelessWidget {
                         bottomRight: Radius.circular(18),
                       ),
               ),
-              child: Text(
-                text ?? '',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Monstserrat',
-                  fontSize: 14,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    text ?? '',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Monstserrat',
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    time ?? '',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Monstserrat',
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

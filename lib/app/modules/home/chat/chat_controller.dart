@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:mychat/app/models/chat.dart';
 import 'package:mychat/app/models/message.dart';
 import 'package:mychat/app/repositories/sqlite/chat_sqlite.dart';
@@ -19,6 +20,8 @@ class ChatController extends GetxController {
   RxList listMsg = [].obs;
   late Chat contact;
   late int? id = contact.id;
+  RxBool keyboardOpen = false.obs;
+  RxBool isScrollAtBottom = false.obs;
 
   Future<int?> _setChat() async {
     id = await sqliteRepository.setChat(contact);
@@ -42,7 +45,11 @@ class ChatController extends GetxController {
       List messagesSorted = List.from(messages);
       messagesSorted.sort((a, b) => a['send_date'].compareTo(b['send_date']));
       for (var message in messagesSorted) {
-        listMsg.add((MessageWidget(text: message['content'])));
+        final parseTime = DateTime.tryParse(message['send_date']);
+        listMsg.add((MessageWidget(
+          text: message['content'],
+          time: DateFormat('HH:mm').format(parseTime ?? DateTime.now()),
+        )));
       }
     }
   }

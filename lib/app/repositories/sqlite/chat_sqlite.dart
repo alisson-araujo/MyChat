@@ -51,7 +51,7 @@ class ChatSqlite {
       'message',
       where: 'id_chat = ?',
       whereArgs: [idChat],
-      orderBy: 'send_date DESC',
+      // orderBy: 'send_date ASC',
     );
     return resp;
   }
