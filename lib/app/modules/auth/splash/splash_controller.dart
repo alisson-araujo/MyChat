@@ -1,11 +1,20 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class SplashController extends GetxController {
-  //TODO: verificar se o usuario ja fez login
   @override
-  void onReady() async {
-    await Future.delayed(const Duration(seconds: 2));
-    Get.offAllNamed('/conversations');
-    super.onReady();
+  void onInit() {
+    checkToken();
+    super.onInit();
+  }
+
+  checkToken() async {
+    const storage = FlutterSecureStorage();
+    final String? token = await storage.read(key: 'token');
+    if (token != null) {
+      // TODO: check token in api
+      Get.offAllNamed('/conversations');
+    }
+    Get.offAllNamed('/register-first-step');
   }
 }
