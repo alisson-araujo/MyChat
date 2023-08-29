@@ -25,6 +25,7 @@ dependencies:
   path: ^1.8.2
   intl: ^0.18.1
   flutter_keyboard_visibility: ^5.4.1
+  dio: ^5.3.2
 
 dev_dependencies:
   flutter_test:
