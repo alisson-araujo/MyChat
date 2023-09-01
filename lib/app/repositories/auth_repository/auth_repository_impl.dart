@@ -25,10 +25,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future register({required User user}) async {
     try {
       final response = await dio.post(
-        'http://localhost:8000/register',
+        'http://localhost:8000/register-user',
         data: {
-          'name': user.username,
-          'phoneNumber': user.phoneNumber,
+          'username': user.username,
+          'phone': user.phoneNumber,
           'password': user.password,
         },
       );
