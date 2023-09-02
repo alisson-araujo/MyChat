@@ -10,10 +10,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await dio.post(
         'http://localhost:8000/token',
-        data: {
-          'phoneNumber': phoneNumber,
+        data: FormData.fromMap({
+          'username': phoneNumber,
           'password': password,
-        },
+        }),
       );
       return response.data;
     } on DioException catch (e) {

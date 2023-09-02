@@ -49,6 +49,7 @@ class _RegisterThirdStepPageState extends State<RegisterThirdStepPage> {
                 SizedBox(
                   width: width * 0.9,
                   child: TextFormField(
+                    controller: _usernameEc,
                     decoration: const InputDecoration(
                       label: Text('username'),
                     ),
@@ -63,6 +64,7 @@ class _RegisterThirdStepPageState extends State<RegisterThirdStepPage> {
                 SizedBox(
                   width: width * 0.9,
                   child: TextFormField(
+                    controller: _passwordEc,
                     decoration: const InputDecoration(
                       label: Text('password'),
                     ),
