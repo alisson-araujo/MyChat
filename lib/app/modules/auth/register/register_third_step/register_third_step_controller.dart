@@ -31,6 +31,12 @@ class RegisterThirdStepController extends GetxController {
     if (token != null) {
       await _storage.write(key: 'accessToken', value: token['access_token']);
       Get.offAllNamed('/conversations');
+    } else {
+      Get.snackbar(
+        'error',
+        'something went wrong',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 }
