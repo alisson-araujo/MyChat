@@ -1,20 +1,31 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mychat/app/models/user.dart';
 import 'package:mychat/app/repositories/auth_repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final dio = Dio();
+  final secureStorage = const FlutterSecureStorage();
+  final _baseUrl = 'http://localhost:8000';
 
   @override
   Future login({required String phoneNumber, required String password}) async {
     try {
       final response = await dio.post(
-        'http://localhost:8000/token',
+        '$_baseUrl/token',
         data: FormData.fromMap({
           'username': phoneNumber,
           'password': password,
         }),
       );
+
+      await secureStorage.write(
+        key: 'accessToken',
+        value: response.data['access_token'],
+      );
+
       return response.data;
     } on DioException catch (e) {
       throw Exception(e.message);
@@ -22,10 +33,31 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future refresh() async {
+    try {
+      final accessToken = await secureStorage.read(key: 'accessToken');
+      final response = await dio.post(
+        '$_baseUrl/token/refresh',
+        options: Options(
+          headers: {'token': 'Bearer $accessToken'},
+        ),
+      );
+      await secureStorage.write(
+        key: 'accessToken',
+        value: response.data['access_token'],
+      );
+      return response.data;
+    } on DioException catch (e) {
+      log('Error: ${e.message}');
+      return {'accessToken': null};
+    }
+  }
+
+  @override
   Future register({required User user}) async {
     try {
       final response = await dio.post(
-        'http://localhost:8000/register-user',
+        '$_baseUrl/register-user',
         data: {
           'username': user.username,
           'phone': user.phoneNumber,
