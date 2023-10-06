@@ -42,10 +42,12 @@ class AuthRepositoryImpl implements AuthRepository {
           headers: {'token': 'Bearer $accessToken'},
         ),
       );
-      await secureStorage.write(
-        key: 'accessToken',
-        value: response.data['access_token'],
-      );
+      if (response.data['access_token'] != null) {
+        await secureStorage.write(
+          key: 'accessToken',
+          value: response.data['access_token'],
+        );
+      }
       return response.data;
     } on DioException catch (e) {
       log('Error: ${e.message}');
