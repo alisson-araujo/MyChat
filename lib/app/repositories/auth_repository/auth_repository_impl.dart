@@ -21,14 +21,16 @@ class AuthRepositoryImpl implements AuthRepository {
         }),
       );
 
-      await secureStorage.write(
-        key: 'accessToken',
-        value: response.data['access_token'],
-      );
+      if (response.statusCode == 200) {
+        await secureStorage.write(
+          key: 'accessToken',
+          value: response.data['access_token'],
+        );
+      }
 
       return response.data;
     } on DioException catch (e) {
-      throw Exception(e.message);
+      return Exception(e.response?.data['detail']);
     }
   }
 
@@ -39,7 +41,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await dio.post(
         '$_baseUrl/token/refresh',
         options: Options(
-          headers: {'token': 'Bearer $accessToken'},
+          headers: {'Authorization': 'Bearer $accessToken'},
         ),
       );
       if (response.data['access_token'] != null) {

@@ -16,10 +16,11 @@ class SplashController extends GetxController {
     final String? token = await storage.read(key: 'accessToken');
     if (token != null) {
       final refreshToken = await _authRepository.refresh();
-      if (refreshToken?["accessToken"] != null) {
+      if (refreshToken?["access_token"] != null) {
         Get.offAllNamed('/conversations');
+      } else {
+        Get.offAllNamed('/login');
       }
-      Get.offAllNamed('/register-first-step');
     } else {
       Get.offAllNamed('/register-first-step');
     }
