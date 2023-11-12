@@ -116,18 +116,27 @@ class ContactsController extends GetxController {
 
   void combineTwoList(
       List<Contact> allContacts, List contactsWithRegistration) {
-    for (var contact in allContacts) {
-      for (var contactWithRegistration in contactsWithRegistration) {
-        if (contact.phones?.first.value == contactWithRegistration['phone']) {
-          alreadyRegistered.add({
-            'name': contact.givenName,
-            'phone': contact.phones?.first.value,
-          });
-        } else {
-          notRegistered.add({
-            'name': contact.givenName,
-            'phone': contact.phones?.first.value,
-          });
+    if (contactsWithRegistration.isEmpty) {
+      for (var contact in allContacts) {
+        notRegistered.add({
+          'name': contact.givenName,
+          'phone': contact.phones?.first.value,
+        });
+      }
+    } else {
+      for (var contact in allContacts) {
+        for (var contactWithRegistration in contactsWithRegistration) {
+          if (contact.phones?.first.value == contactWithRegistration['phone']) {
+            alreadyRegistered.add({
+              'name': contact.givenName,
+              'phone': contact.phones?.first.value,
+            });
+          } else {
+            notRegistered.add({
+              'name': contact.givenName,
+              'phone': contact.phones?.first.value,
+            });
+          }
         }
       }
     }
