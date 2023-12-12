@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mychat/app/models/chat.dart';
 import 'package:mychat/app/models/message.dart';
 import 'package:mychat/app/repositories/sqlite/chat_sqlite.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/status.dart' as status;
 
 import '../widgets/message_widget.dart';
 
@@ -12,7 +16,14 @@ class ChatController extends GetxController {
   void onInit() {
     contact = Get.arguments[0];
     loadMessages();
+    openWebSocket();
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    closeWebSocket();
+    super.onClose();
   }
 
   final sqliteRepository = ChatSqlite();
@@ -22,13 +33,14 @@ class ChatController extends GetxController {
   late int? id = contact.id;
   RxBool keyboardOpen = false.obs;
   RxBool isScrollAtBottom = false.obs;
+  late IOWebSocketChannel channel;
 
   Future<int?> _setChat() async {
     id = await sqliteRepository.setChat(contact);
     return id;
   }
 
-  void sendMessage(String message) async {
+  void _sendMessage(String message) async {
     id ??= await _setChat();
     await sqliteRepository.setMessage(
       Message(
@@ -52,5 +64,30 @@ class ChatController extends GetxController {
         )));
       }
     }
+  }
+
+  openWebSocket() async {
+    channel = IOWebSocketChannel.connect('ws://192.168.0.195:8000/ws');
+
+    await channel.ready;
+
+    channel.stream.listen((event) {
+      listMsg.add(MessageWidget(
+        isReceived: true,
+        text: event,
+        time: DateFormat('HH:mm').format(DateTime.now()),
+      ));
+    }, onError: (error) {
+      log('Error: $error');
+    });
+  }
+
+  sendMessage(String message) {
+    _sendMessage(message);
+    channel.sink.add(message);
+  }
+
+  closeWebSocket() {
+    channel.sink.close(status.goingAway);
   }
 }
