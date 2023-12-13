@@ -55,6 +55,18 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
               ],
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: width * 0.05),
+                child: TextButton(
+                  onPressed: () => Get.toNamed('/login'),
+                  child: const Text('Already have an account?'),
+                ),
+              )
+            ],
+          ),
           Padding(
             padding: EdgeInsets.only(top: height * 0.1),
             child: SizedBox(
