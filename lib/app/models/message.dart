@@ -3,12 +3,14 @@ class Message {
   String content;
   DateTime sendDate;
   DateTime? receiveDate;
+  int isReceived;
 
   Message({
     required this.idChat,
     required this.content,
     required this.sendDate,
     this.receiveDate,
+    this.isReceived = 0,
   });
 
   Map<String, dynamic> toMap() {
@@ -17,6 +19,7 @@ class Message {
       'content': content,
       'send_date': sendDate.toString(),
       'receive_date': receiveDate.toString(),
+      'is_received': isReceived,
     };
   }
 
@@ -26,21 +29,7 @@ class Message {
       content: map['content'],
       sendDate: DateTime.parse(map['send_date']),
       receiveDate: DateTime.parse(map['receive_date']),
+      isReceived: map['is_received'],
     );
   }
 }
-
-
-
-
-
-
-
-
-
-// id INTEGER PRIMARY KEY AUTOINCREMENT,
-//       id_chat INTEGER NOT NULL,
-//       content TEXT,
-//       send_date DATETIME NOT NULL,
-//       receive_date DATETIME,
-//       FOREIGN KEY (id_chat) REFERENCES chat(id)

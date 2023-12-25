@@ -47,23 +47,8 @@ class SqliteDb {
       content TEXT,
       send_date DATETIME NOT NULL,
       receive_date DATETIME,
+      is_received INTEGER DEFAULT 0,
       FOREIGN KEY (id_chat) REFERENCES chat(id)
     )
   ''';
-
-// this.messages,
-//     this.lastMsg,
-//     this.lastMsgTime, {
-//     required this.id,
-//     required this.idContact,
-//     required this.numberMsgNotRead,
-  // String get _user => '''
-  //   CREATE TABLE user(
-  //     id INTEGER PRIMARY KEY AUTOINCREMENT,
-  //     name TEXT,
-  //     number TEXT,
-  //     password TEXT,
-  //     photo TEXT
-  //   )
-  // ''';
 }
