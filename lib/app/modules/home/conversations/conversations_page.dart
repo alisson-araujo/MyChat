@@ -58,7 +58,8 @@ class _ConversationsPageState extends State<ConversationsPage>
                   itemCount: controller.chats.length,
                   itemBuilder: (context, index) {
                     final dateParse = DateTime.tryParse(
-                        controller.chats[index].lastMsgTime ?? '');
+                        controller.chats[index].lastMsgTime ??
+                            '1970-01-01T00:00:00Z');
                     return GestureDetector(
                       onTap: () => controller.getChat(controller.chats[index]),
                       child: ConversationWidget(

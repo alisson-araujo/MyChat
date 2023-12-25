@@ -40,13 +40,14 @@ class ChatController extends GetxController {
     return id;
   }
 
-  void _sendMessage(String message) async {
+  void _saveOnSqlite(String message, bool isReceived) async {
     id ??= await _setChat();
     await sqliteRepository.setMessage(
       Message(
         idChat: contact.id ?? id ?? 1,
         content: message,
         sendDate: DateTime.now(),
+        isReceived: isReceived ? 1 : 0,
       ),
     );
   }
@@ -60,6 +61,7 @@ class ChatController extends GetxController {
         final parseTime = DateTime.tryParse(message['send_date']);
         listMsg.add((MessageWidget(
           text: message['content'],
+          isReceived: message['is_received'] == 1,
           time: DateFormat('HH:mm').format(parseTime ?? DateTime.now()),
         )));
       }
@@ -77,13 +79,14 @@ class ChatController extends GetxController {
         text: event,
         time: DateFormat('HH:mm').format(DateTime.now()),
       ));
+      _saveOnSqlite(event, true);
     }, onError: (error) {
       log('Error: $error');
     });
   }
 
   sendMessage(String message) {
-    _sendMessage(message);
+    _saveOnSqlite(message, false);
     channel.sink.add(message);
   }
 
