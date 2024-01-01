@@ -13,7 +13,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final controller = Get.put(ChatController());
+  final controller = Get.find<ChatController>();
   final mensageEd = TextEditingController();
   final grey = Colors.grey[300];
   final ScrollController _scrollController = ScrollController();
@@ -173,6 +173,8 @@ class _ChatPageState extends State<ChatPage> {
                             itemBuilder: (context, index) {
                               return controller.listMsg[index];
                             },
+                            padding: const EdgeInsets.only(
+                                bottom: kBottomNavigationBarHeight),
                           )
                         : const SizedBox(),
                   ),
