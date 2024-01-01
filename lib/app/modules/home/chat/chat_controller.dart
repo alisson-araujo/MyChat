@@ -86,8 +86,12 @@ class ChatController extends GetxController {
   }
 
   sendMessage(String message) {
-    _saveOnSqlite(message, false);
-    channel.sink.add(message);
+    try {
+      channel.sink.add(message);
+      _saveOnSqlite(message, false);
+    } catch (e) {
+      log('Error: $e');
+    }
   }
 
   closeWebSocket() {
