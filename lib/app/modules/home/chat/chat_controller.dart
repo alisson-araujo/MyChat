@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mychat/app/models/chat.dart';
@@ -35,6 +36,12 @@ class ChatController extends GetxController {
   RxBool isScrollAtBottom = false.obs;
   late IOWebSocketChannel channel;
 
+  Future<String?> _getToken() async {
+    const secureStorage = FlutterSecureStorage();
+    final accessToken = await secureStorage.read(key: 'accessToken');
+    return accessToken;
+  }
+
   Future<int?> _setChat() async {
     id = await sqliteRepository.setChat(contact);
     return id;
@@ -68,8 +75,12 @@ class ChatController extends GetxController {
     }
   }
 
-  openWebSocket() async {
-    channel = IOWebSocketChannel.connect('ws://192.168.0.195:8000/ws');
+  void openWebSocket() async {
+    final token = await _getToken();
+    channel = IOWebSocketChannel.connect(
+      'ws://192.168.0.195:8000/ws',
+      headers: {'token': token},
+    );
 
     await channel.ready;
 
@@ -85,16 +96,18 @@ class ChatController extends GetxController {
     });
   }
 
-  sendMessage(String message) {
+  void sendMessage(String message, String recipient) {
     try {
-      channel.sink.add(message);
+      channel.sink.add(
+        '{"recipient": "$recipient", "data": "$message"}',
+      );
       _saveOnSqlite(message, false);
     } catch (e) {
       log('Error: $e');
     }
   }
 
-  closeWebSocket() {
-    channel.sink.close(status.goingAway);
+  Future<void> closeWebSocket() async {
+    await channel.sink.close(status.goingAway);
   }
 }

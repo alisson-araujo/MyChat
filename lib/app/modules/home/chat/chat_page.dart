@@ -138,7 +138,8 @@ class _ChatPageState extends State<ChatPage> {
                           text: mensageEd.text,
                           time: DateFormat('HH:mm').format(DateTime.now()),
                         ));
-                        controller.sendMessage(mensageEd.text);
+                        controller.sendMessage(mensageEd.text,
+                            controller.contact.numberContact ?? '');
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           _scrollToBottom();
                         });
