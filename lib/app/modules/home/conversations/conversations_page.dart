@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:mychat/app/modules/home/conversations/conversations_controller.dart';
 import 'package:mychat/app/modules/home/widgets/conversation_widget.dart';
@@ -77,7 +78,7 @@ class _ConversationsPageState extends State<ConversationsPage>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed('/contacts'),
+        onPressed: () => context.pushNamed('/contacts'),
         child: const Icon(Icons.message),
       ),
     );

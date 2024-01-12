@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class RegisterFirstStepPage extends StatefulWidget {
   const RegisterFirstStepPage({super.key});
@@ -61,7 +61,7 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
               Padding(
                 padding: EdgeInsets.only(right: width * 0.05),
                 child: TextButton(
-                  onPressed: () => Get.toNamed('/login'),
+                  onPressed: () => GoRouter.of(context).push('/login'),
                   child: const Text('Already have an account?'),
                 ),
               )
@@ -74,8 +74,8 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    Get.toNamed('/register-third-step',
-                        arguments: _phoneEc.text);
+                    GoRouter.of(context)
+                        .push('/register-third-step', extra: _phoneEc.text);
                   }
                 },
                 child: const Text('Continue'),
