@@ -26,13 +26,13 @@ class ConversationsController extends GetxController {
     }
   }
 
-  Future<void> getChat(Chat chat) async {
+  Future<List> getChat(Chat chat) async {
     final talk = await chatsql.getChat(chat.id!);
     if (talk.isNotEmpty) {
       final messages = await chatsql.getMessages(chat.id!);
-      Get.toNamed('/chat', arguments: [chat, messages]);
+      return messages;
     }
 
-    Get.toNamed('/chat', arguments: [chat]);
+    return [];
   }
 }

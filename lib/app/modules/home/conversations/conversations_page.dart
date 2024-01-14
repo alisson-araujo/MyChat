@@ -62,7 +62,13 @@ class _ConversationsPageState extends State<ConversationsPage>
                         controller.chats[index].lastMsgTime ??
                             '1970-01-01T00:00:00Z');
                     return GestureDetector(
-                      onTap: () => controller.getChat(controller.chats[index]),
+                      onTap: () {
+                        controller.getChat(controller.chats[index]).then(
+                              (messages) => context.push(
+                                '/chat/${[controller.chats[index], messages]}',
+                              ),
+                            );
+                      },
                       child: ConversationWidget(
                         userName: controller.chats[index].nameContact,
                         lastMsg: controller.chats[index].lastMsg,
@@ -78,7 +84,7 @@ class _ConversationsPageState extends State<ConversationsPage>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.pushNamed('/contacts'),
+        onPressed: () => context.push('/contacts'),
         child: const Icon(Icons.message),
       ),
     );
