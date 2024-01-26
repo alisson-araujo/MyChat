@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mychat/app/modules/auth/login/login_controller.dart';
 
 class LoginPage extends StatefulWidget {
@@ -79,7 +80,17 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
-                      controller.login(_usernameEc.text, _passwordEc.text);
+                      controller
+                          .login(_usernameEc.text, _passwordEc.text)
+                          .then((response) {
+                        response['success']
+                            ? context.goNamed('/conversations')
+                            : ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(response['message']),
+                                ),
+                              );
+                      });
                     }
                   },
                   child: const Text('Login'),

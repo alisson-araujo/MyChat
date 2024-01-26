@@ -11,12 +11,14 @@ class LoginController extends GetxController {
     );
 
     if (response is Exception) {
-      return Get.snackbar(
-        'Error',
-        response.toString(),
-        duration: const Duration(seconds: 5),
-      );
+      return {
+        'success': false,
+        'message': response.toString(),
+      };
     }
-    Get.offAllNamed('/conversations');
+    return {
+      'success': true,
+      'message': 'Login successfully!',
+    };
   }
 }
