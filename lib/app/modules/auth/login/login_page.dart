@@ -80,17 +80,17 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
-                      controller
-                          .login(_usernameEc.text, _passwordEc.text)
-                          .then((response) {
-                        response['success']
-                            ? context.goNamed('/conversations')
-                            : ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(response['message']),
-                                ),
-                              );
-                      });
+                      controller.login(_usernameEc.text, _passwordEc.text).then(
+                        (response) {
+                          response == 'ok'
+                              ? context.go('/conversations')
+                              : ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(response),
+                                  ),
+                                );
+                        },
+                      );
                     }
                   },
                   child: const Text('Login'),
