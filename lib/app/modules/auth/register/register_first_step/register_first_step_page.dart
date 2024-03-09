@@ -50,6 +50,12 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
                     decoration: const InputDecoration(
                       label: Text('phone number'),
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your phone number';
+                      }
+                      return null;
+                    },
                   ),
                 ),
               ],
@@ -61,7 +67,7 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
               Padding(
                 padding: EdgeInsets.only(right: width * 0.05),
                 child: TextButton(
-                  onPressed: () => GoRouter.of(context).push('/login'),
+                  onPressed: () => context.push('/login'),
                   child: const Text('Already have an account?'),
                 ),
               )
